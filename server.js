@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
+import securosRoute from './routes/securos.js'
 
 dotenv.config();
 
@@ -18,6 +19,10 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.json({ message: 'Hello from Express!' });
 });
+
+
+app.use('/api/securos', securosRoute)
+
 
 const isWindows = process.platform === 'win32';
 const tlsCAFile = isWindows ? process.env.TLS_CA_FILE_LOC : process.env.TLS_CA_FILE;
