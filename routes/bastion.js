@@ -36,42 +36,20 @@ const login = async () => {
 
 router.get('/', async (req, res) => {
     await login(); // Войти и получить куку
-    const { user, ts } = req.query;
+    const { id } = req.query;
+    let card = id === undefined ? '000028FBC024' : id
 
-    const data = {
-        user: {},
-        ts: {}
-    }
-    if (user){
-        console.log(user)
-        try {
-            const response = await instance.get(`http://${process.env.BASTION_IP}/api/GetPassesByCardCode?srvCode=${process.env.BASTION_SRVCODE}&cardCode=000028FBC024`, {
-                headers: {
-                    'Cookie': authCookie, // Явно передаём куку
-                }
-            });
-            data.user = {
-                card: response.data[0].cardCode,
-                name: `${response.data[0].personData.name} ${response.data[0].personData.firstName} ${response.data[0].personData.secondName}`,
-                dep: response.data[0].personData.dep,
-                post: response.data[0].personData.post,
-                personCat: response.data[0].personData.personCat,
+    /*card for test - user 000028FBC024   ts   000028F72FF4*/
+
+    try {
+        const response = await instance.get(`http://${process.env.BASTION_IP}/api/GetPassesByCardCode?srvCode=${process.env.BASTION_SRVCODE}&cardCode=${card}`, {
+            headers: {
+                'Cookie': authCookie, // передаём куку
             }
-
-        } catch (e) {
-            res.status(404).send('Данных нет');
-        }
-    }
-
-    if (ts){
-        console.log(ts)
-        try {
-            const response = await instance.get(`http://${process.env.BASTION_IP}/api/GetPassesByCardCode?srvCode=${process.env.BASTION_SRVCODE}&cardCode=000028F72FF4`, {
-                headers: {
-                    'Cookie': authCookie, // Явно передаём куку
-                }
-            });
-            data.ts = {
+        });
+        if (response.data[0].personData.personCat === "4 Транспорт"){
+            const data = {
+                type: 'car',
                 card: response.data[0].cardCode,
                 auto: response.data[0].personData.name,
                 number: response.data[0].personData.firstName,
@@ -80,27 +58,21 @@ router.get('/', async (req, res) => {
                 personCat: response.data[0].personData.personCat,
                 driver: response.data[0].personData.addField1,
             }
-
-        } catch (e) {
-            res.status(404).send('Данных нет');
-        }
-    }
-
-    console.log(data)
-    res.send(data);
-
-    /*try {
-        const response = await instance.get(`http://${process.env.BASTION_IP}/api/GetPassesByCardCode?srvCode=${process.env.BASTION_SRVCODE}&cardCode=000028F72FF4`, {
-            headers: {
-                'Cookie': authCookie, // Явно передаём куку
+            res.send(data);
+        } else {
+            const data = {
+                type: 'user',
+                card: response.data[0].cardCode,
+                name: `${response.data[0].personData.name} ${response.data[0].personData.firstName} ${response.data[0].personData.secondName}`,
+                dep: response.data[0].personData.dep,
+                post: response.data[0].personData.post,
+                personCat: response.data[0].personData.personCat,
             }
-        });
-
-
-        res.send(response.data[0]);
+            res.send(data);
+        }
     } catch (e) {
-        res.status(404).send('Изображение не найдено');
-    }*/
+        res.status(404).send('Данных нет');
+    }
 });
 
 

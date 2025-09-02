@@ -34,8 +34,8 @@ router.get('/', async (req, res) => {
             `http://${process.env.SECUROS_SRV}/api/v1/recognizers/${camID}/protocol`,
             {
                 params: {
-                    start_time: '20250901T105023',
-                    stop_time: '20250901T110123',
+                    start_time: '20250901T145023',
+                    stop_time: '20250901T150123',
                     max_count: 1,
                 },
                 auth: {
@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/image/:tid', async (req, res) => {
+router.get('/:tid', async (req, res) => {
     const { tid } = req.params;
     try {
         const response = await axios.get(
