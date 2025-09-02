@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 import securosRoute from './routes/securos.js'
+import bastionRoute from './routes/bastion.js'
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/securos', securosRoute)
+app.use('/api/bastion', bastionRoute)
 
 
 const isWindows = process.platform === 'win32';
