@@ -46,9 +46,15 @@ const dataOff = {
 router.get('/', async (req, res) => {
     try {
         await instance.put('', dataOn);
-        await new Promise(resolve => setTimeout(resolve, 30000));
-        await instance.put('', dataOff);
-        res.status(200).json({message: 'ок'} )
+        res.status(200).json({ message: 'ок' });
+        setTimeout(async () => {
+            try {
+                await instance.put('', dataOff);
+                console.log('Реле выключено (через 30 сек)');
+            } catch (error) {
+                console.error('Ошибка при выключении реле:', error.message);
+            }
+        }, 30000);
     } catch (e) {
         res.status(404).send('Данных нет');
     }
