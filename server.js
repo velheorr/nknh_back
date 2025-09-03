@@ -6,6 +6,7 @@ import express from "express";
 import dotenv from "dotenv";
 import securosRoute from './routes/securos.js'
 import bastionRoute from './routes/bastion.js'
+import moxaRoute from './routes/moxa.js'
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/securos', securosRoute)
 app.use('/api/bastion', bastionRoute)
+app.use('/api/moxa', moxaRoute)
 
 
 const isWindows = process.platform === 'win32';
