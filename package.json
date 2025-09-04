@@ -18,7 +18,8 @@
     "express-http-proxy": "^2.1.1",
     "express-validator": "^7.2.1",
     "mongoose": "^8.18.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.8.1"
   },
   "keywords": [],
   "license": "ISC",
